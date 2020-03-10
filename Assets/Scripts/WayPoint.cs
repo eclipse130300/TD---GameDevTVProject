@@ -8,17 +8,9 @@ public class WayPoint : MonoBehaviour {
 	public bool isExplored = false;
 	private const int gridSize = 10;
 	public WayPoint exploredFrom;
-
+	public bool isPlaceable = true;
 	Vector2Int gridPos;
 
-
-	//void Update()
-	//{
-	//	if(isExplored)
-	//	{
-	//		SetColour(exploredColor);
-	//	}
-	//}
 	public int GetSize()
 	{
 		return gridSize;
@@ -31,9 +23,11 @@ public class WayPoint : MonoBehaviour {
 					Mathf.RoundToInt(transform.position.z / gridSize)
 			);
 	}
-	public void SetColour(Color col)
+	void OnMouseOver()
 	{
-		MeshRenderer meshrend = transform.Find("Top").GetComponent<MeshRenderer>();
-		meshrend.material.color = col;
+		if(Input.GetMouseButtonDown(0) && isPlaceable)
+		{
+		print(gameObject.name);
+		}
 	}
 }

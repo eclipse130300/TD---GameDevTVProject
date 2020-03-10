@@ -3,65 +3,78 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tower : MonoBehaviour {
-	[SerializeField] Transform objectToPan;
-	[SerializeField] float shootingDistance = 10f;
-	ParticleSystem bullets;
+public class Tower : MonoBehaviour
+{
 
-	//GameObject[] enemies;
-	GameObject targetEnemy;
+    // Paramaters of each tower
+    [SerializeField] Transform objectToPan;
+    [SerializeField] float attackRange = 10f;
+    ParticleSystem projectileParticle;
 
-	float enemyCheckTimer = 0.1f;
-	float distanceToEnemy;
-	void Start()
-	{
-		bullets = GetComponentInChildren<ParticleSystem>();
-	}
-	// Update is called once per frame
-	void Update()
-	{
-		if (!targetEnemy)
-		{
-			FindTargetEnemy();
-			ShootEnemy(false);
-		}
-		else
-		{
-			objectToPan.LookAt(targetEnemy.transform);
-			ShootEnemy(true);
-			if (Vector3.Distance(gameObject.transform.position, targetEnemy.transform.position) > shootingDistance)
-			{
-				targetEnemy = null;
-			}
-		}
-	}
+    // State of each tower
+    Transform targetEnemy;
+    void Start()
+    {
+        projectileParticle = GetComponentInChildren<ParticleSystem>();
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        SetTargetEnemy();
+        if (targetEnemy)
+        {
+            objectToPan.LookAt(targetEnemy);
+            FireAtEnemy();
+        }
+        else
+        {
+            Shoot(false);
+        }
+    }
 
-	void FindTargetEnemy()
-	{
-		var enemies = GameObject.FindObjectsOfType<EnemyDamage>();
-		Transform closestEnemy = enemies[0].transform;
-		foreach (EnemyDamage enemy in enemies)
-		{
-			closestEnemy = GetClosest(closestEnemy, enemy.transform);
-		}
-		targetEnemy = closestEnemy.gameObject;
-	}
+    private void SetTargetEnemy()
+    {
+        var sceneEnemies = FindObjectsOfType<EnemyDamage>();
+        if (sceneEnemies.Length == 0) { return; }
 
-	private Transform GetClosest(Transform closestEnemy, Transform newTransform)
-	{
-		if(Vector3.Distance(transform.position, newTransform.position) <= (Vector3.Distance(transform.position, closestEnemy.position)))
-		{
-			return newTransform;
-		}
-		else
-		{
-			return closestEnemy;
-		}
-	}
+        Transform closestEnemy = sceneEnemies[0].transform;
 
-	void ShootEnemy(bool isActive)
-	{
-		var emissionModule = bullets.emission;
-		emissionModule.enabled = isActive;
-	}
+        foreach (EnemyDamage testEnemy in sceneEnemies)
+        {
+            closestEnemy = GetClosest(closestEnemy, testEnemy.transform);
+        }
+
+        targetEnemy = closestEnemy;
+    }
+
+    private Transform GetClosest(Transform transformA, Transform transformB)
+    {
+        var distToA = Vector3.Distance(transform.position, transformA.position);
+        var distToB = Vector3.Distance(transform.position, transformB.position);
+
+        if (distToA < distToB)
+        {
+            return transformA;
+        }
+
+        return transformB;
+    }
+
+    private void FireAtEnemy()
+    {
+        float distanceToEnemy = Vector3.Distance(targetEnemy.transform.position, gameObject.transform.position);
+        if (distanceToEnemy <= attackRange)
+        {
+            Shoot(true);
+        }
+        else
+        {
+            Shoot(false);
+        }
+    }
+    private void Shoot(bool isActive)
+    {
+        var emissionModule = projectileParticle.emission;
+        emissionModule.enabled = isActive;
+    }
 }

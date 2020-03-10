@@ -227,7 +227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectToPan: {fileID: 4281722158444376}
-  shootingDistance: 30
+  attackRange: 30
 --- !u!198 &198482606961717440
 ParticleSystem:
   m_ObjectHideFlags: 1
