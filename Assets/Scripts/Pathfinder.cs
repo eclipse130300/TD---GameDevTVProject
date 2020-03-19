@@ -63,7 +63,6 @@ public class Pathfinder : MonoBehaviour
             searchCenter.isExplored = true;
         }
 
-        // todo work-out path!
     }
 
     private void HaltIfEndFound()

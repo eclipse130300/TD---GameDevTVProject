@@ -13,6 +13,8 @@ public class Tower : MonoBehaviour
 
     // State of each tower
     Transform targetEnemy;
+    public WayPoint currentWayPoint;
+
     void Start()
     {
         projectileParticle = GetComponentInChildren<ParticleSystem>();

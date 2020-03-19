@@ -7,6 +7,7 @@ public class EnemySpawner : MonoBehaviour {
 	[SerializeField] float secondsBetweenSpawns = 2;
 	public Pathfinder pathfinderScript;
 	[SerializeField] EnemyMovement enemy;
+	public Transform enemiesParent;
 	// Use this for initialization
 	void Start () {
 		StartCoroutine(SpawnEnemy());
@@ -19,7 +20,7 @@ public class EnemySpawner : MonoBehaviour {
 		while (true)
 		{
 			var enemyCopy = Instantiate(enemy, pathfinderScript.startWaypoint.transform.position, Quaternion.identity);
-			
+			enemyCopy.transform.parent = enemiesParent;
 			yield return new WaitForSeconds(secondsBetweenSpawns);
 		}
 	}
