@@ -323,4 +323,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   exploredColor: {r: 0.7971603, g: 0.63235295, b: 1, a: 0}
   isExplored: 0
+  towerPrefab: {fileID: 1618409886600228, guid: 072f4e4c28f9e164fb80e24dbf1d8381,
+    type: 2}
   exploredFrom: {fileID: 0}
+  isPlaceable: 1

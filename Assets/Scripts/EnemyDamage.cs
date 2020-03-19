@@ -4,26 +4,29 @@ using UnityEngine;
 
 public class EnemyDamage : MonoBehaviour {
 	[SerializeField] int hitPoints = 10;
+	[SerializeField] ParticleSystem onHitParticles;
+	[SerializeField] ParticleSystem deathFX;
+	EnemyMovement enemyMovement;
 	// Use this for initialization
 
-	void Update()
+	void OnParticleCollision(GameObject other)
 	{
-		if(hitPoints <= 0)
+		if (hitPoints <= 0)
 		{
 			DestroyEnemy();
 		}
-	}
-	void OnParticleCollision(GameObject other)
-	{
-		print("I'm hit!!");
-		hitPoints--;
+		ProcessHit();
 	}
 	void ProcessHit()
 	{
 		hitPoints = hitPoints - 1;
+		onHitParticles.Play();
 	}
 	void DestroyEnemy()
 	{
+		var vfx = Instantiate(deathFX, transform.position, Quaternion.identity);
+		vfx.Play();
 		Destroy(gameObject);
+		Destroy(vfx, 1f);
 	}
 }

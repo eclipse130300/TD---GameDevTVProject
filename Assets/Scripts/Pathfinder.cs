@@ -8,7 +8,7 @@ public class Pathfinder : MonoBehaviour
     WayPoint searchCenter;
     Dictionary<Vector2Int, WayPoint> grid = new Dictionary<Vector2Int, WayPoint>();
     Queue<WayPoint> queue = new Queue<WayPoint>();
-    List<WayPoint> path = new List<WayPoint>();
+    public List<WayPoint> path = new List<WayPoint>();
     private bool isRunning = true; // todo make private
     Vector2Int[] directions = {
         Vector2Int.up,
